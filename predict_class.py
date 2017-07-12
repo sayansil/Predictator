@@ -33,13 +33,20 @@ def plot_prediction_grid (xx, yy, predicted_grid, predictors, outcomes):
         
     
     background_colormap = lcm(c_bg)
-    observation_colormap = lcm(c_ob)
+    observation_colormap = (c_ob)
     
     plt.figure( figsize =(10,10) )
     
     plt.pcolormesh(xx, yy, predicted_grid, cmap = background_colormap, alpha = 0.5)
     
-    plt.scatter(predictors[:,0], predictors [:,1], c = outcomes, cmap = observation_colormap, s = 50)
+    xs = np.array(predictors[:,0])
+    ys = np.array(predictors[:,1])
+    outcomes = np.array( outcomes )
+    
+    
+    for i in range(types):
+        to_plot = outcomes==i
+        plt.scatter(xs[to_plot] , ys[to_plot] ,s = 50,color=observation_colormap[i] , label="Class "+str(i+1))
     
     plt.xlabel('Variable 1'); plt.ylabel('Variable 2')
     
@@ -48,6 +55,7 @@ def plot_prediction_grid (xx, yy, predicted_grid, predictors, outcomes):
     plt.xlim (np.min(xx), np.max(xx))
     plt.ylim (np.min(yy), np.max(yy))
     
+    plt.legend(loc="lower right")
     
     if not os.path.exists("Plots"):
         os.makedirs("Plots")
