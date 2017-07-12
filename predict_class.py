@@ -3,16 +3,21 @@ import random
 import scipy.stats as ss
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap as lcm
-from sklearn.neighbors import KNeighborsClassifier as knc
 from time import strftime as stime
 import os
 
-def synthetic_plot(limits=(-5,5,-5,5), unit=0.1, no_of_points=20, no_of_classes=2, k=5, home=False):
+def synthetic_plot(limits=(-5,5,-5,5), unit=0.1, no_of_points=20, no_of_classes=2, k=5):
+    limits = ( limits[0], limits[1]+unit, limits[2], limits[3]+unit )
     (predictors, outcomes) = generate_synth_data(no_of_points, no_of_classes)
-    genuine_plot(predictors, outcomes, limits, unit, k, home)
     
-def genuine_plot(predictors, outcomes, limits=(-5,5,-5,5), unit=0.1, k=5, home=False):
-    (xx, yy, prediction_grid) = make_prediction_grid(predictors, outcomes, limits, unit, k, home)
+    (xx, yy, prediction_grid) = make_prediction_grid(predictors, outcomes, limits, unit, k)
+    plot_prediction_grid(xx, yy, prediction_grid, predictors, outcomes);
+    
+    
+def genuine_plot(predictors, outcomes, limits=(-5,5,-5,5), unit=0.1, k=5):
+    limits = ( limits[0], limits[1]+unit, limits[2], limits[3]+unit )
+    (xx, yy, prediction_grid) = make_prediction_grid(predictors, outcomes, limits, unit, k)
+    
     plot_prediction_grid(xx, yy, prediction_grid, predictors, outcomes);
 
 
@@ -50,7 +55,11 @@ def plot_prediction_grid (xx, yy, predicted_grid, predictors, outcomes):
     
     plt.xlabel('Variable 1'); plt.ylabel('Variable 2')
     
-    plt.xticks(()); plt.yticks(())
+    x_labels = np.linspace( np.min(xx), np.max(xx), 5 )
+    y_labels = np.linspace( np.min(yy), np.max(yy), 5 )
+    
+    plt.xticks(x_labels, rotation="vertical")
+    plt.yticks(y_labels)
     
     plt.xlim (np.min(xx), np.max(xx))
     plt.ylim (np.min(yy), np.max(yy))
@@ -64,14 +73,10 @@ def plot_prediction_grid (xx, yy, predicted_grid, predictors, outcomes):
     plt.savefig(filename)
     plt.show()
 
-def make_prediction_grid(points, outcomes, limits, steps=1, k=5, home=True):
+def make_prediction_grid(points, outcomes, limits, steps=1, k=5):
     (x_min, x_max, y_min, y_max) = limits
     xs = np.arange(x_min, x_max, steps)
     ys = np.arange(y_min, y_max, steps)
-    
-    if not home:
-        knn = knc(n_neighbors=k)
-        knn.fit(points,outcomes)
     
     (xx, yy) = np.meshgrid(xs, ys)
     
@@ -81,11 +86,8 @@ def make_prediction_grid(points, outcomes, limits, steps=1, k=5, home=True):
     for i,x in enumerate(xs):
         for j,y in enumerate(ys):
             p = np.array([x,y])
-            if home:
-                prediction_grid[j,i] = knn_predict( p , points, outcomes, k)
-            else:
-                prediction_grid[j,i] = knn.predict([p])[0]
-                
+            prediction_grid[j,i] = knn_predict( p , points, outcomes, k)
+            
     return (xx, yy, prediction_grid)
             
 
@@ -106,7 +108,6 @@ def plot_synth_data(n=50,types=2):
         plt.plot(points[k:k+n,0], points[k:k+n,1], "o", color=c, label="Class "+str(k//n + 1))
     plt.legend(loc="upper left")
     plt.show()
-
 
 
 def knn_predict(p, points, outcomes, k=5):
@@ -165,19 +166,3 @@ def find_nearest_neighbors(p, points, k=5):
     ind = np.argsort(distances)
 
     return ind[:k]
-
-
-
-#points = np.array([[1,1], [1,2], [1,3], [2,1], [2,2], [2,3], [3,1], [3,2], [3,3]])
-#p = np.array([2.5,2])
-#outcomes = np.array([0,0,0,0,1,1,1,1,1])
-#print(knn_predict(p, points, outcomes))
-
-
-#plt.plot(points[:,0], points[:,1], "bo", markersize=5);
-#plt.plot(p[0],p[1], "ro", markersize=7);
-#plt.axis([0.5,3.5,0.5,3.5])
-
-#plt.plot( predictors[outcomes==0][:,0], predictors[outcomes==0][:,0], "ro")
-#plt.plot( predictors[outcomes==1][:,0], predictors[outcomes==1][:,0], "go")
-#plt.plot( predictors[outcomes==2][:,0], predictors[outcomes==2][:,0], "bo")
