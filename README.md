@@ -1,4 +1,4 @@
-# Class Predictor
+# Predictator
 
 Data can belong to various classes. Given two independant attributes of a dependant variable, we can plot that data point in a 2D-plane. The 3rd attribute having no concrete/well-defined dependency on the previous two attribute is known as the class/type of data point.
 #### For example:
@@ -8,7 +8,7 @@ Now, we divide our 100 data samples into n=2 categories: 1.People who know Scala
 
 We can now show the class/category of each data type on our previous plot with a different color?
 
-But thats not it. As the headline says class predictor, we take this set of data points, and the set of their individual classes and analyzing it (using the kNN approach), we could tell the most likely class a data point would belong to at any given point in it.
+But thats not it. As the headline suggests, we take this set of data points, and the set of their individual classes and analyzing it (using the kNN approach), we could tell the most likely class a data point would belong to at any given point in it.
 As the data conclusive analysis is done on the basis of trend in the dataset provided, more the number of data-points, more the accuracy of the algorithm.
 
 For a further reading on the kNN method, visit [here.](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm)
