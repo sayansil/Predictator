@@ -26,7 +26,6 @@ What things you need to install the software and how to install them:
 * random
 * scipy
 * matplotlib
-* matplotlib.colors
 * sklearn
 * time
 * os
