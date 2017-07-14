@@ -41,7 +41,7 @@ But feel free to tweak around stuff.
 ## Built With
 
 * [Spyder](https://github.com/spyder-ide) IDE for Python
-* [Anaconda](https://docs.continuum.io/anaconda/) Anaconda packages
+* [Anaconda](https://docs.continuum.io/anaconda/) packages
 * A tiny bit of [love](https://www.google.co.in/search?q=love&oq=love&aqs=chrome..69i57j0l5.1607j0j4&sourceid=chrome&ie=UTF-8#q=what+is+love?) 
 
 ## Versioning
